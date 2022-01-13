@@ -1,34 +1,44 @@
 import time
 import numpy as np
 import sys
-import vlc
+import pygame
 
+class Music:
+    def __init__(self):
+        pygame.mixer.init()
 
-    #audio code from Google
-sound_file = vlc.MediaPlayer(r"16_Battle (VS Trainer).mp3")
-sound_file.play()
-time.sleep(5.5)
+        self.opening_track = pygame.mixer.Sound("music/02_Opening (part 2).mp3")
+        self.rival_track = pygame.mixer.Sound("music/06_Rival Appears.mp3")
+        self.battle_track = pygame.mixer.Sound("music/16_Battle (VS Trainer).mp3")
+        self.victory_track = pygame.mixer.Sound("music/17_Victory (VS Trainer).mp3")
+        self.current_track = self.opening_track
 
-print("""
-░█▀▀█ █▀▀█ █▀▀█ █──█ 　 █▀▀ █──█ █▀▀█ █── █── █▀▀ █▀▀▄ █▀▀▀ █▀▀ █▀▀▄ 　 ─█▀▀█ █▀▀ █──█ 　 ▀▀█▀▀ █▀▀█ 　 █▀▀█ 
-░█─▄▄ █▄▄█ █▄▄▀ █▄▄█ 　 █── █▀▀█ █▄▄█ █── █── █▀▀ █──█ █─▀█ █▀▀ █──█ 　 ░█▄▄█ ▀▀█ █▀▀█ 　 ──█── █──█ 　 █▄▄█ 
-░█▄▄█ ▀──▀ ▀─▀▀ ▄▄▄█ 　 ▀▀▀ ▀──▀ ▀──▀ ▀▀▀ ▀▀▀ ▀▀▀ ▀──▀ ▀▀▀▀ ▀▀▀ ▀▀▀─ 　 ░█─░█ ▀▀▀ ▀──▀ 　 ──▀── ▀▀▀▀ 　 ▀──▀ 
-                                  █▀▀▄ █▀▀█ ▀▀█▀▀ ▀▀█▀▀ █── █▀▀ █ 
-                                  █▀▀▄ █▄▄█ ──█── ──█── █── █▀▀ ▀ 
-                                  ▀▀▀─ ▀──▀ ──▀── ──▀── ▀▀▀ ▀▀▀ ▄""")
+    def  play(self, track_name):
+        self.current_track.stop()
+        self.current_track = self.__dict__.get(track_name)
+        self.current_track.play(loops = -1)
+
+    def stop(self):
+        self.current_track.stop()
+
 
 def delay_print(s):
-        # print one character at a time
-        # From Chad https://github.com/csfeeser/Python/blob/master/cooltricks.md
-        for c in s:
-            sys.stdout.write(c)
-            sys.stdout.flush()
-            time.sleep(0.05)
+    # print one character at a time
+    for c in s:
+        sys.stdout.write(c)
+        sys.stdout.flush()
+        time.sleep(0.05)
 
+def pokemon_starter():
+            print("Hello trainer, my name is prof. Oak. You're about to go on a Pokemon Journey, but first, you need "
+                  "a pokemon. ")
+            starter = (int(input('Which pokemon will you choose? 1.Charmander, 2.Squritle, 3.Bulbasaur  ')))
+            return pokemon[starter - 1]
 
 # Making the pokemon class with stats for user pokemon
 # initialize the pokemon class and attributes
 class Pokemon:
+
     # reference https://python-forum.io/Thread-Game-Logic-Pokemon-like-type-advantages-in-python
     def __init__(self, name, types, moves, EVs, health='==================='):
         # save variables as attributes
@@ -39,6 +49,8 @@ class Pokemon:
         self.defense = EVs['DEFENSE']
         self.health = health
         self.bars = 20  # Amount of health bars
+        self.music = Music()
+
 
     def fight(self, rivalPokemon):
         # Allow the pokemon to fight each other
@@ -62,27 +74,27 @@ class Pokemon:
         time.sleep(2)
 
         # There are type advantages in Pokemon Fire is weak against water, water is weak against grass, grass is weak
-        #against fire.....Fire is strong against grass, Water is strong against fire and grass is strong against water
+        # against fire.....Fire is strong against grass, Water is strong against fire and grass is strong against water
         version = ['Fire', 'Water', 'Grass', 'Normal']
         # website where I referenced the code below https://realpython.com/python-enumerate/#iterating-with-for-loops-in-python
         for i, k in enumerate(version):
-                # rivalPokemon is STRONG
-                if rivalPokemon.types == version[(i + 1) % 3]:
-                    rivalPokemon.attack *= 2
-                    rivalPokemon.defense *= 8
-                    self.attack /= 2
-                    self.defense /= 2
-                    string_1_attack = '\nIts not very effective...'
-                    string_2_attack = '\nIts super effective!'
+            # rivalPokemon is STRONG
+            if rivalPokemon.types == version[(i + 1) % 3]:
+                rivalPokemon.attack *= 2
+                rivalPokemon.defense *= 8
+                self.attack /= 2
+                self.defense /= 2
+                string_1_attack = '\nIts not very effective...'
+                string_2_attack = '\nIts super effective!'
 
-                # rivalPokemon is WEAK
-                if self.types == version[(i + 2) % 3]:
-                    self.attack *= 4
-                    self.defense *= 2
-                    rivalPokemon.attack /= 6
-                    rivalPokemon.defense /= 2
-                    string_1_attack = '\nIts super effective!'
-                    string_2_attack = '\nIts not very effective...'
+            # rivalPokemon is WEAK
+            if self.types == version[(i + 2) % 3]:
+                self.attack *= 4
+                self.defense *= 2
+                rivalPokemon.attack /= 6
+                rivalPokemon.defense /= 2
+                string_1_attack = '\nIts super effective!'
+                string_2_attack = '\nIts not very effective...'
 
         # Now for the actual fighting...
         # Continue while pokemon still have health
@@ -140,30 +152,22 @@ class Pokemon:
             print(f"{rivalPokemon.name}\t\tHLTH\t{rivalPokemon.health}\n")
             time.sleep(.5)
 
-
-
-
-
-            while  self.bars <= 0:
+            while self.bars <= 0:
                 delay_print("\n..." + self.name + ' fainted.')
                 break
-
-
 
         money = np.random.choice(5000)
         delay_print(f"\nOpponent paid you ${money}.\n")
 
-
-
+pokemon =  [
+                Pokemon('Charmander', 'Fire', ['Ember', 'Scratch', 'Tackle', 'Fire Punch'], {'ATTACK': 4, 'DEFENSE': 2}),
+                Pokemon('Squirtle', 'Water', ['Bubblebeam', 'Tackle', 'Headbutt', 'Surf'], {'ATTACK': 3, 'DEFENSE': 3}),
+                Pokemon('Bulbasaur', 'Grass', ['Vine Wip', 'Razor Leaf', 'Tackle', 'Leech Seed'],{'ATTACK': 2, 'DEFENSE': 4}),
+                Pokemon('Eevee', 'normal', ['Tackle', 'Bite', 'Take Down', 'Body Slam'], {'ATTACK': 3, 'DEFENSE': 2})
+             ]
 
 
 
 if __name__ == '__main__':
-    # Create Pokemon gen 1 dictionary
 
-    Charmander = Pokemon('Charmander', 'Fire', ['Ember', 'Scratch', 'Tackle', 'Fire Punch'],{'ATTACK': 4, 'DEFENSE': 2})
-    Squirtle = Pokemon('Squirtle', 'Water', ['Bubblebeam', 'Tackle', 'Headbutt', 'Surf'], {'ATTACK': 3, 'DEFENSE': 3})
-    Bulbasaur = Pokemon('Bulbasaur', 'Grass', ['Vine Wip', 'Razor Leaf', 'Tackle', 'Leech Seed'],{'ATTACK': 2, 'DEFENSE': 4})
-    Eevee = Pokemon('Eevee', 'normal', ['Tackle', 'Bite', 'Take Down', 'Body Slam'], {'ATTACK': 3, 'DEFENSE': 2})
-
-    Squirtle.fight(Eevee)  # Get them to fight
+    pokemon_starter().fight(Pokemon[3])  # Get them to fight
