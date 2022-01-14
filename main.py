@@ -7,6 +7,7 @@ pygame.init()
 
 
 class Music:
+    #https://www.geeksforgeeks.org/python-playing-audio-file-in-pygame/
     def __init__(self):
         pygame.mixer.init()
 
@@ -30,6 +31,7 @@ music = Music()
 
 
 def delay_print(s):
+    # https: // www.codegrepper.com / code - examples / python / python + slow + print
     # print one character at a time
     for c in s:
         sys.stdout.write(c)
@@ -83,7 +85,7 @@ class Pokemon:
                 rivalPokemon.defense *= 6
                 self.attack /= 2
                 self.defense /= 6
-                string_1_attack = '\n You Pokemons went down!'
+                string_1_attack = '\n You Pokemons health went down!'
                 string_2_attack = '\nSuper effective'
 
             # rivalPokemon is WEAK
