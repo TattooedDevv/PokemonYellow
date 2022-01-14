@@ -34,7 +34,7 @@ def delay_print(s):
     for c in s:
         sys.stdout.write(c)
         sys.stdout.flush()
-        time.sleep(0.02)
+        time.sleep(0.03)
 
 
 # Making the pokemon class with stats for user pokemon
@@ -61,7 +61,6 @@ class Pokemon:
         print("TYPE/", self.types)
         print("ATTACK/", self.attack)
         print("DEFENSE/", self.defense)
-        # info on np.mean https://numpy.org/doc/stable/reference/generated/numpy.mean.html
         print("LVL/", 3 * (1 + np.mean([self.attack, self.defense])))
 
         print("\nVS")
@@ -74,27 +73,25 @@ class Pokemon:
 
         time.sleep(2)
 
-        # There are type advantages in Pokemon Fire is weak against water, water is weak against grass, grass is weak
-        # against fire.....Fire is strong against grass, Water is strong against fire and grass is strong against water
         version = ['Fire', 'Water', 'Grass', 'Normal']
         # website where I referenced the code below
         # https://realpython.com/python-enumerate/#iterating-with-for-loops-in-python
         for i, k in enumerate(version):
             # rivalPokemon is STRONG
             if rivalPokemon.types == version[(i + 1) % 3]:
-                rivalPokemon.attack *= 2
-                rivalPokemon.defense *= 8
+                rivalPokemon.attack *= 4
+                rivalPokemon.defense *= 6
                 self.attack /= 2
-                self.defense /= 2
-                string_1_attack = '\n Not very effective....'
+                self.defense /= 6
+                string_1_attack = '\n You Pokemons went down!'
                 string_2_attack = '\nSuper effective'
 
             # rivalPokemon is WEAK
             if self.types == version[(i + 2) % 3]:
-                self.attack *= 3
+                self.attack *= 4
                 self.defense *= 3
-                rivalPokemon.attack /= 6
-                rivalPokemon.defense /= 2
+                rivalPokemon.attack /= 4
+                rivalPokemon.defense /= 6
                 string_1_attack = '\nCritical Hit!'
                 string_2_attack = '\n Not very effective!'
 
@@ -163,7 +160,7 @@ class Pokemon:
     def victory(self):
         music.play("victory_track")
         money = np.random.choice(5000)
-        delay_print("Okay! I'll make my Pokémon fight to toughen it up! Ash! Gramps! Smell you later!")
+        delay_print("\nOkay! I'll make my Pokémon fight to toughen it up! Ash! Gramps! Smell you later!")
         delay_print(f"\nOpponent paid you ${money}.\n")
         time.sleep(10)
 
@@ -171,9 +168,9 @@ class Pokemon:
 pokemon_choices = [
 
     Pokemon('Charmander', 'Fire', ['Ember', 'Scratch', 'Tackle', 'Fire Punch'], {'ATTACK': 4, 'DEFENSE': 4}),
-    Pokemon('Squirtle', 'Water', ['Bubblebeam', 'Tackle', 'Headbutt', 'Surf'], {'ATTACK': 2, 'DEFENSE': 4}),
-    Pokemon('Bulbasaur', 'Grass', ['Vine Wip', 'Razor Leaf', 'Tackle', 'Leech Seed'], {'ATTACK': 2, 'DEFENSE': 5}),
-    Pokemon('Eevee', 'normal', ['Tackle', 'Bite', 'Take Down', 'Body Slam'], {'ATTACK': 6, 'DEFENSE': 3})
+    Pokemon('Squirtle', 'Water', ['Bubblebeam', 'Tackle', 'Headbutt', 'Surf'], {'ATTACK': 5, 'DEFENSE': 4}),
+    Pokemon('Bulbasaur', 'Grass', ['Vine Whip', 'Razor Leaf', 'Tackle', 'Leech Seed'], {'ATTACK': 3, 'DEFENSE': 5}),
+    Pokemon('Eevee', 'normal', ['Tackle', 'Bite', 'Take Down', 'Body Slam'], {'ATTACK': 4, 'DEFENSE': 3})
 
 ]
 
@@ -209,3 +206,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+#[src/libmpg123/id3.c:482] error: No comment text / valid description?
